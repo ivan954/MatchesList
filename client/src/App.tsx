@@ -2,7 +2,14 @@ import React from 'react'
 import './App.css'
 import { Matches } from './Matches'
 import { createApiClient, Match } from './api'
-import { Dropdown, DropdownButton, Row, Col, Container } from 'react-bootstrap'
+import {
+	Dropdown,
+	DropdownButton,
+	Row,
+	Col,
+	Container,
+	Button,
+} from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 export type AppState = {
@@ -12,6 +19,10 @@ export type AppState = {
 
 const api = createApiClient()
 const App = () => {
+	const [btntoggle, setBtntoggle] = React.useState<boolean>(false)
+	const [btntoggleA, setBtntoggleA] = React.useState<boolean>(false)
+	const [approveCount, setApproveCount] = React.useState<Number>()
+	const [DeclineCount, setDeclineCount] = React.useState<Number>()
 	const [search, setSearch] = React.useState<string>('')
 	const [matches, setMatches] = React.useState<Match[]>([])
 	const [section, setSection] = React.useState<string>('ALL')
@@ -57,6 +68,14 @@ const App = () => {
 				)
 				break
 
+			case 'approved':
+				setMatches(
+					await (
+						await api.getMatches()
+					).filter((t) => t.labels?.find((e) => e === 'approved'))
+				)
+				break
+
 			case 'Possible':
 				setMatches(
 					await (
@@ -81,6 +100,22 @@ const App = () => {
 				)
 				break
 
+			case 'Everything except approved':
+				setMatches(
+					await (
+						await api.getMatches()
+					).filter((t) => t.labels?.find((e) => e !== 'approved'))
+				)
+				break
+
+			case 'Everything except Decline':
+				setMatches(
+					await (
+						await api.getMatches()
+					).filter((t) => t.labels?.find((e) => e !== 'Decline'))
+				)
+				break
+
 			default:
 				const obj = await api.getMatches()
 				setMatches(obj)
@@ -100,7 +135,18 @@ const App = () => {
 			setSearch(val)
 		}, 300)
 	}
-	console.log(matches)
+	const toggleApprove = () => {
+		setSection('Everything except approved')
+		const count = matches.filter((t) => t.labels?.find((e) => e === 'approved'))
+		setApproveCount(count.length)
+		setBtntoggleA(true)
+	}
+	const toggleDecline = () => {
+		setSection('Everything except Decline')
+		const count = matches.filter((t) => t.labels?.find((e) => e === 'Decline'))
+		setDeclineCount(count.length)
+		setBtntoggle(true)
+	}
 	return (
 		<main>
 			<h1 className='text-center font-weight-bold p-2'>Matches List</h1>
@@ -146,9 +192,27 @@ const App = () => {
 							</Dropdown.Item>
 						</DropdownButton>
 					</Col>
+					<Col>
+						<Button className='m-2' onClick={toggleApprove}>
+							Approve
+						</Button>
 
+						<Button className='m-2' onClick={toggleDecline}>
+							Decline
+						</Button>
+
+						{btntoggleA && <h5>Count of Approved : {approveCount}</h5>}
+						{btntoggle && <h5>Count of Decline : {DeclineCount}</h5>}
+					</Col>
 					<Col>
 						<DropdownButton title='labels'>
+							<Dropdown.Item
+								onClick={() => {
+									setSection('approved')
+								}}
+							>
+								Approved
+							</Dropdown.Item>
 							<Dropdown.Item
 								onClick={() => {
 									setSection('Decline')
