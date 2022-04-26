@@ -1,49 +1,69 @@
-import React from "react";
-import { Match } from "./api";
+import React from 'react'
+import { Card, Row, Col } from 'react-bootstrap'
+import { Match } from './api'
 export const Matches = ({
-  matches,
-  search,
+	matches,
+	search,
 }: {
-  matches: Match[];
-  search: string;
+	matches: Match[]
+	search: string
 }) => {
-  const filteredMatches = matches.filter((t) =>
-    (
-      t.borrower.user.firstName.toLowerCase() +
-      t.borrower.user.lastName.toLowerCase()
-    ).includes(search.toLowerCase())
-  );
+	const filteredMatches = matches.filter((t) =>
+		(
+			t.borrower.user.firstName.toLowerCase() +
+			t.borrower.user.lastName.toLowerCase() +
+			t.borrower.user.email.toLowerCase() +
+			t.companyName.toLocaleLowerCase()
+		).includes(search.toLowerCase())
+	)
 
-  return (
-    <ul className="matches">
-      {filteredMatches.map((match) => (
-        <li key={match.id} className="match">
-          <h5 className="title">{match.companyName}</h5>
-          <div className="matchData">
-            <div>
-              <p className="userDate">
-                <b>Full Name:</b> {match.borrower.user.firstName}{" "}
-                {match.borrower.user.lastName}
-              </p>
-              <p className="userDate">
-                <b>Email:</b> {match.borrower.user.email}
-              </p>
-              <p className="userDate">
-                <b>Amount Request: </b> {match.amountReq}
-              </p>
-              <p className="userDate">
-                <b>Balance: </b> {match.borrower.financeData.balance}{" "}
-                {match.borrower.financeData.currency}
-              </p>
-            </div>
-          </div>
-          <footer>
-            <div className="meta-data">
-              Created At {new Date(match.creationTime).toLocaleString()}
-            </div>
-          </footer>
-        </li>
-      ))}
-    </ul>
-  );
-};
+	return (
+		<>
+			<Row xs={1} md={2} className='g-4'>
+				{filteredMatches.map((match) => (
+					<Col key={match.id}>
+						<Card
+							className=' mt-3 border-3 rounded-3'
+							border={
+								match.borrower.creditScore >= 679
+									? 'success'
+									: match.borrower.creditScore < 579
+									? 'danger'
+									: 'warning'
+							}
+						>
+							<Card.Header className='text-center'>
+								{match.borrower.creditScore >= 679 ? (
+									<h4>Section A</h4>
+								) : match.borrower.creditScore < 579 ? (
+									<h4>Section C</h4>
+								) : (
+									<h4>Section B</h4>
+								)}{' '}
+							</Card.Header>
+							<Card.Body className='matchData'>
+								<Card.Title>{match.companyName}</Card.Title>
+								<Card.Text>
+									<b>Full Name:</b> {match.borrower.user.firstName}{' '}
+									{match.borrower.user.lastName}
+									<br />
+									<b>Email:</b> {match.borrower.user.email}
+									<br />
+									<b>Amount Request: </b> {match.amountReq}
+									<br />
+									<b>Balance: </b> {match.borrower.financeData.balance}{' '}
+									{match.borrower.financeData.currency}
+									<br />
+									<b>credit Score: </b> {match.borrower.creditScore}
+								</Card.Text>
+							</Card.Body>
+							<Card.Footer>
+								Created At {new Date(match.creationTime).toLocaleString()}
+							</Card.Footer>
+						</Card>
+					</Col>
+				))}
+			</Row>
+		</>
+	)
+}

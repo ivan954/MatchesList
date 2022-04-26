@@ -3,7 +3,7 @@
 import * as fs from "fs";
 import Chance from "chance";
 
-const data = require("./data.json");
+const data = require("./data/data.json");
 
 // export const tempData = data as Ticket[];
 export const tempData = data;
