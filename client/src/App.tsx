@@ -47,86 +47,43 @@ const App = () => {
 				break
 
 			case 'A':
-				setMatches(
-					await (
-						await api.getMatches()
-					).filter((t) => t.borrower.creditScore >= 679)
-				)
+				setMatches(await await api.getMatchesSectionA())
 				break
 
 			case 'B':
-				setMatches(
-					await (
-						await api.getMatches()
-					).filter(
-						(t) =>
-							t.borrower.creditScore <= 679 && t.borrower.creditScore >= 579
-					)
-				)
+				setMatches(await await api.getMatchesSectionB())
 				break
 
 			case 'C':
-				setMatches(
-					await (
-						await api.getMatches()
-					).filter((t) => t.borrower.creditScore < 579)
-				)
+				setMatches(await await api.getMatchesSectionC())
 				break
 
 			case 'Decline':
-				setMatches(
-					await (
-						await api.getMatches()
-					).filter((t) => t.labels?.find((e) => e === 'Decline'))
-				)
+				setMatches(await await api.getMatchesLableDecline())
 				break
 
 			case 'approved':
-				setMatches(
-					await (
-						await api.getMatches()
-					).filter((t) => t.labels?.find((e) => e === 'approved'))
-				)
+				setMatches(await await api.getMatchesLableApproved())
 				break
 
 			case 'Possible':
-				setMatches(
-					await (
-						await api.getMatches()
-					).filter((t) => t.labels?.find((e) => e === 'Possible'))
-				)
+				setMatches(await await api.getMatchesLablePossible())
 				break
 
 			case 'Open':
-				setMatches(
-					await (
-						await api.getMatches()
-					).filter((t) => t.labels?.find((e) => e === 'Open'))
-				)
+				setMatches(await await api.getMatchesLableOpen())
 				break
 
 			case 'Close':
-				setMatches(
-					await (
-						await api.getMatches()
-					).filter((t) => t.labels?.find((e) => e === 'Close'))
-				)
+				setMatches(await await api.getMatchesLableClose())
 				break
 
 			case 'Everything except approved':
-				setMatches(
-					await (
-						await api.getMatches()
-					).filter((t) => t.labels?.find((e) => e !== 'approved'))
-				)
+				setMatches(await await api.getMatchesLableExceptApproved())
 				break
 
 			case 'Everything except Decline':
-				setMatches(
-					await (
-						await api.getMatches()
-					).filter((t) => t.labels?.find((e) => e !== 'Decline'))
-				)
+				setMatches(await await api.getMatchesLableExceptDecline())
 				break
 
 			default:
@@ -164,8 +121,8 @@ const App = () => {
 	}
 
 	//get current post
-	const indexOfLastPost = (currentPage * postsPrePage)
-	const indexOfFirstPost = (indexOfLastPost - postsPrePage)
+	const indexOfLastPost = currentPage * postsPrePage
+	const indexOfFirstPost = indexOfLastPost - postsPrePage
 	const currentPost = matches.slice(indexOfFirstPost, indexOfLastPost)
 
 	//change page
@@ -285,14 +242,13 @@ const App = () => {
 			) : (
 				<h2>Loading...</h2>
 			)}
-			<div className="d-flex justify-content-center">
+			<div className='d-flex justify-content-center'>
 				<Pagination
-				postsPrePage={postsPrePage}
-				totalPost={matches.length}
-				paginate={paginate}
-			/>
+					postsPrePage={postsPrePage}
+					totalPost={matches.length}
+					paginate={paginate}
+				/>
 			</div>
-			
 		</main>
 	)
 }
