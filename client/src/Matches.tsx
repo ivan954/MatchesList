@@ -8,6 +8,8 @@ export const Matches = ({
 	matches: Match[]
 	search: string
 }) => {
+	// filter the matches what search includes
+
 	const filteredMatches = matches.filter((t) =>
 		(
 			t.borrower.user.firstName.toLowerCase() +
@@ -22,6 +24,12 @@ export const Matches = ({
 			<Row xs={1} md={2} className='g-4'>
 				{filteredMatches.map((match) => (
 					<Col key={match.id}>
+						{/* cololr the border by sections 
+								For A user credit score must to be 679 and above.
+								For B user credit score must to be between 579 and 679.
+								For C user credit score must to be under 579. 
+								*/}
+
 						<Card
 							className=' mt-3 border-3 rounded-3'
 							border={

@@ -26,11 +26,6 @@ export type Match = {
 	labels?: string[]
 }
 
-interface Pagination {
-	page: Number
-	pages: Number
-}
-
 export type ApiClient = {
 	getMatches: () => Promise<Match[]>
 }
@@ -40,7 +35,7 @@ export const createApiClient = (): ApiClient => {
 		getMatches: () => {
 			const data = axios
 				.get(`http://localhost:8888/api/match`)
-				.then((res) => res.data.tempData)
+				.then((res) => res.data)
 
 			return data
 		},

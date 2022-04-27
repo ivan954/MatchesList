@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './App.css'
 import { Matches } from './Matches'
 import { createApiClient, Match } from './api'
+import { Pagination } from './Pagination'
 import {
 	Dropdown,
 	DropdownButton,
@@ -19,14 +20,26 @@ export type AppState = {
 
 const api = createApiClient()
 const App = () => {
+	// count and show without approve & approve
 	const [btntoggle, setBtntoggle] = React.useState<boolean>(false)
 	const [btntoggleA, setBtntoggleA] = React.useState<boolean>(false)
 	const [approveCount, setApproveCount] = React.useState<Number>()
 	const [DeclineCount, setDeclineCount] = React.useState<Number>()
+
+	//set start page and amount will be showing in screen
+	const [currentPage, setCurrentPage] = useState(1)
+	const [postsPrePage, setPostsPrePage] = useState(4)
+
+	// search state
 	const [search, setSearch] = React.useState<string>('')
+
+	// showing data state
 	const [matches, setMatches] = React.useState<Match[]>([])
+
+	// filter by default showing all the data
 	const [section, setSection] = React.useState<string>('ALL')
 
+	// switch case for using the filter to change the showing data = matches
 	async function fetchMatches() {
 		switch (section) {
 			case 'ALL':
@@ -135,6 +148,8 @@ const App = () => {
 			setSearch(val)
 		}, 300)
 	}
+
+	// show Everything except approved or Decline and count them
 	const toggleApprove = () => {
 		setSection('Everything except approved')
 		const count = matches.filter((t) => t.labels?.find((e) => e === 'approved'))
@@ -147,14 +162,26 @@ const App = () => {
 		setDeclineCount(count.length)
 		setBtntoggle(true)
 	}
+
+	//get current post
+	const indexOfLastPost = (currentPage * postsPrePage)
+	const indexOfFirstPost = (indexOfLastPost - postsPrePage)
+	const currentPost = matches.slice(indexOfFirstPost, indexOfLastPost)
+
+	//change page
+	const paginate = (pageNumber: React.SetStateAction<number>) => {
+		setCurrentPage(pageNumber)
+	}
+
 	return (
 		<main>
 			<h1 className='text-center font-weight-bold p-2'>Matches List</h1>
 			<header>
+				{/*can be searched only by section state (ALL,A,B,C, Decline, approved, Possible, Open, Close, Everything except approved, Everything except Decline) */}
 				<input
 					type='search'
 					className='text-center form-control'
-					placeholder='Search By Name, Email, Companies...'
+					placeholder={`Search by   ${section}    Name, Email, Companie...`}
 					onChange={(e) => onSearch(e.target.value)}
 				/>
 			</header>
@@ -200,6 +227,8 @@ const App = () => {
 						<Button className='m-2' onClick={toggleDecline}>
 							Decline
 						</Button>
+
+						{/* show after clicking the Approved/Decline button */}
 
 						{btntoggleA && <h5>Count of Approved : {approveCount}</h5>}
 						{btntoggle && <h5>Count of Decline : {DeclineCount}</h5>}
@@ -251,11 +280,16 @@ const App = () => {
 			) : null}
 			{matches ? (
 				<div className='p-3 mb-2 bg-white border'>
-					<Matches matches={matches} search={search} />
+					<Matches matches={currentPost} search={search} />
 				</div>
 			) : (
 				<h2>Loading...</h2>
 			)}
+			<Pagination
+				postsPrePage={postsPrePage}
+				totalPost={matches.length}
+				paginate={paginate}
+			/>
 		</main>
 	)
 }
