@@ -62,7 +62,7 @@ const App = () => {
 				setMatches(await await api.getMatchesLableDecline())
 				break
 
-			case 'approved':
+			case 'Approved':
 				setMatches(await await api.getMatchesLableApproved())
 				break
 
@@ -78,7 +78,7 @@ const App = () => {
 				setMatches(await await api.getMatchesLableClose())
 				break
 
-			case 'Everything except approved':
+			case 'Everything except Approved':
 				setMatches(await await api.getMatchesLableExceptApproved())
 				break
 
@@ -108,8 +108,8 @@ const App = () => {
 
 	// show Everything except approved or Decline and count them
 	const toggleApprove = () => {
-		setSection('Everything except approved')
-		const count = matches.filter((t) => t.labels?.find((e) => e === 'approved'))
+		setSection('Everything except Approved')
+		const count = matches.filter((t) => t.labels?.find((e) => e === 'Approved'))
 		setApproveCount(count.length)
 		setBtntoggleA(true)
 	}
@@ -134,7 +134,7 @@ const App = () => {
 		<main>
 			<h1 className='text-center font-weight-bold p-2'>Matches List</h1>
 			<header>
-				{/*can be searched only by section state (ALL,A,B,C, Decline, approved, Possible, Open, Close, Everything except approved, Everything except Decline) */}
+				{/*can be searched only by section state (ALL,A,B,C, Decline, Approved, Possible, Open, Close, Everything except approved, Everything except Decline) */}
 				<input
 					type='search'
 					className='text-center form-control'
@@ -194,7 +194,7 @@ const App = () => {
 						<DropdownButton title='labels'>
 							<Dropdown.Item
 								onClick={() => {
-									setSection('approved')
+									setSection('Approved')
 								}}
 							>
 								Approved
