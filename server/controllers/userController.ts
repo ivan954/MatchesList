@@ -72,7 +72,7 @@ const getUserslabelClose = AsyncHandler(async (req: any, res: any) => {
 	res.json(data)
 })
 //@desc Fetch users in label Except Decline
-//@route Get /api/match/label/close
+//@route Get /api/match/label/exceptd
 const getMatchesLableExceptApproved = AsyncHandler(async (req: any, res: any) => {
 	const data = await tempData.filter((t: { labels: String[] }) =>
 		t.labels?.find((e) => e !== 'approved')
@@ -80,7 +80,7 @@ const getMatchesLableExceptApproved = AsyncHandler(async (req: any, res: any) =>
 	res.json(data)
 })
 //@desc Fetch users in label Except Approved
-//@route Get /api/match/label/close
+//@route Get /api/match/label/excepta
 const getMatchesLableExceptDecline = AsyncHandler(async (req: any, res: any) => {
 	const data = await tempData.filter((t: { labels: String[] }) =>
 		t.labels?.find((e) => e !== 'Decline')
