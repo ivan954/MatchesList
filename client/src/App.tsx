@@ -28,7 +28,7 @@ const App = () => {
 
 	//set start page and amount will be showing in screen
 	const [currentPage, setCurrentPage] = useState(1)
-	const [postsPrePage, setPostsPrePage] = useState(4)
+	const [postsPrePage] = useState(4)
 
 	// search state
 	const [search, setSearch] = React.useState<string>('')
@@ -285,11 +285,14 @@ const App = () => {
 			) : (
 				<h2>Loading...</h2>
 			)}
-			<Pagination
+			<div className="d-flex justify-content-center">
+				<Pagination
 				postsPrePage={postsPrePage}
 				totalPost={matches.length}
 				paginate={paginate}
 			/>
+			</div>
+			
 		</main>
 	)
 }
