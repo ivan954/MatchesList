@@ -17,6 +17,7 @@
     "lerna": "^3.13.1"
   },
   "dependencies": {
+    "colors": "^1.4.0",
     "express-async-handler": "^1.2.0",
     "mongoose": "^6.3.1"
   }

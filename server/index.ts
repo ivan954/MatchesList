@@ -1,14 +1,12 @@
 import express from 'express'
-
 import bodyParser = require('body-parser')
-import { tempData } from './temp-data'
-import userRoutes from './routs/userRoutes'
+import matchesRoutes from './routs/matchesRoutes'
+import sectionsRouter from './routs/sectionsRouter'
+import lablesRouter from './routs/lablesRouter'
 
 const app = express()
 
 const PORT = 8888
-
-const PAGE_SIZE = 12
 
 app.use(express.json())
 
@@ -19,11 +17,18 @@ app.use((_, res, next) => {
 	next()
 })
 
-app.use('/api/match', userRoutes)
+app.use('/api/match', matchesRoutes)
+app.use('/api/match/', sectionsRouter)
+app.use('/api/match/', lablesRouter)
 
 app.get('/', (req, res) => {
 	res.send('dev api status - up')
 })
+
+app.listen(PORT)
+console.log('server running', PORT)
+
+//const PAGE_SIZE = 12
 // app.get("/api/match", (req, res) => {
 
 //   //default page is 1
@@ -38,6 +43,3 @@ app.get('/', (req, res) => {
 
 //   res.send(paginatedData);
 // });
-
-app.listen(PORT)
-console.log('server running', PORT)

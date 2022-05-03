@@ -2,23 +2,15 @@ import express from 'express'
 const router = express.Router()
 
 import {
-	getUsers,
-	getUsersSectionA,
-	getUsersSectionB,
-	getUsersSectionC,
 	getUserslabelDecline,
-    getUserslabelApproved,
-    getUserslabelPossible,
-    getUserslabelOpen,
-    getUserslabelClose,
+	getUserslabelApproved,
+	getUserslabelPossible,
+	getUserslabelOpen,
+	getUserslabelClose,
 	getMatchesLableExceptApproved,
-	getMatchesLableExceptDecline
-} from '../controllers/userController'
+	getMatchesLableExceptDecline,
+} from '../controllers/lablesController'
 
-router.route('/').get(getUsers)
-router.route('/a').get(getUsersSectionA)
-router.route('/b').get(getUsersSectionB)
-router.route('/c').get(getUsersSectionC)
 router.route('/label/Decline').get(getUserslabelDecline)
 router.route('/label/approved').get(getUserslabelApproved)
 router.route('/label/Possible').get(getUserslabelPossible)
