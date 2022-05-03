@@ -1,6 +1,6 @@
 import React from 'react'
 import { Card, Row, Col } from 'react-bootstrap'
-import { Match } from './api'
+import { Match } from '../Components/Match'
 export const Matches = ({
 	matches,
 	search,

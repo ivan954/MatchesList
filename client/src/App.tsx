@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import './App.css'
-import { Matches } from './Matches'
-import { createApiClient, Match } from './api'
-import { Pagination } from './Pagination'
+import { Matches } from './Screens/Matches'
+import { createApiClient } from './Components/api'
+import { Match } from './Components/Match'
+import { Pagination } from './Components/Pagination'
 import {
 	Dropdown,
 	DropdownButton,

@@ -1,8 +1,11 @@
 import express from 'express'
 import bodyParser = require('body-parser')
+import connectDB from './config/db'
 import matchesRoutes from './routs/matchesRoutes'
 import sectionsRouter from './routs/sectionsRouter'
 import lablesRouter from './routs/lablesRouter'
+
+connectDB()
 
 const app = express()
 
